@@ -9,9 +9,8 @@ User = get_user_model()
 
 class UserProfile(models.Model):
     user = models.OneToOneField(
-        'user_profile',
-        User, on_delete=models.CASCADE, 
-        related_name="user_profile"
+        User, 
+        on_delete=models.CASCADE
     )
     name = models.CharField(max_length=20, blank=True)
     image = models.ImageField(
@@ -37,7 +36,7 @@ class UserProfile(models.Model):
             return 'http://127.0.0.1:8000' + self.image.url
         return ''
     
-    def get_thumbnail(self):
+    def get_thumbnail(self) -> str:
         if self.thumbnail:
             return 'http://127.0.0.1:8000' + self.thumbnail.url
         else:
@@ -49,7 +48,7 @@ class UserProfile(models.Model):
             else:
                 return ''
             
-    def make_thumnail(self, image, size=(300, 200)):
+    def make_thumnail(self, image, size=(300, 200)) -> File:
         img = Image.open(image)
         img.convert('RGB')
         img.thumbnail(size)
@@ -68,7 +67,7 @@ class Team(models.Model):
         User,
         on_delete=models.CASCADE
     )
-    # to nake automatically 
+    # to make automatically 
     member_count = models.IntegerField()
     created_date = models.DateField(auto_now_add=True)
     
@@ -77,7 +76,7 @@ class Team(models.Model):
         verbose_name_plural = "Teams"
         ordering = ["-id"]
         
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
     
 
@@ -100,3 +99,22 @@ class TeamUser(models.Model):
         
     def __str__(self):
         return f'{self.memeber} - {self.team}'
+    
+
+class Task(models.Model):
+    name = models.CharField(max_length=30)
+    creator = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE
+    )
+    description = models.CharField(max_length=50)
+    is_done = models.BooleanField(default=False)
+    created_date = models.DateField(auto_now_add=True)
+    
+    class Meta:
+        verbose_name = "Team"
+        verbose_name_plural = "Teams"
+        ordering = ["-id"]
+        
+    def __str__(self) -> str:
+        return self.name
