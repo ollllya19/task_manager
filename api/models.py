@@ -12,7 +12,7 @@ class UserProfile(models.Model):
         User, 
         on_delete=models.CASCADE
     )
-    name = models.CharField(max_length=20, blank=True)
+    name = models.CharField(max_length=255, blank=True)
     image = models.ImageField(
         upload_to='uploads/', 
         blank=True, 
@@ -31,7 +31,7 @@ class UserProfile(models.Model):
     def __str__(self) -> str:
         return self.name
     
-    def get_image(self):
+    def get_image(self) -> str:
         if self.image:
             return 'http://127.0.0.1:8000' + self.image.url
         return ''
@@ -61,60 +61,68 @@ class UserProfile(models.Model):
         return thumbnail
     
     
-class Team(models.Model):
-    name = models.CharField(max_length=30)
+class Project(models.Model):
+    title = models.CharField(max_length=255)
     creator = models.ForeignKey(
         User,
-        on_delete=models.CASCADE
+        on_delete=models.SET_NULL, 
+        null=True
     )
     # to make automatically 
     member_count = models.IntegerField()
-    created_date = models.DateField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     
     class Meta:
-        verbose_name = "Team"
-        verbose_name_plural = "Teams"
+        verbose_name = "Project"
+        verbose_name_plural = "Projects"
         ordering = ["-id"]
         
     def __str__(self) -> str:
-        return self.name
+        return self.title
     
-
-class TeamUser(models.Model):
-    member = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE
-    )
-    team = models.ForeignKey(
-        Team,
-        on_delete=models.CASCADE
-    )
     
-    class Meta:
-        verbose_name = "TeamUser"
-        verbose_name_plural = "TeamUsers"
-        ordering = ["-id"]
-        
-        unique_together = ('member', 'team')
-        
-    def __str__(self):
-        return f'{self.memeber} - {self.team}'
-    
-
 class Task(models.Model):
-    name = models.CharField(max_length=30)
+    title = models.CharField(max_length=255)
     creator = models.ForeignKey(
         User,
-        on_delete=models.CASCADE
+        on_delete=models.SET_NULL, 
+        null=True
     )
-    description = models.CharField(max_length=50)
+    description = models.CharField(max_length=255)
     is_done = models.BooleanField(default=False)
     created_date = models.DateField(auto_now_add=True)
     
     class Meta:
-        verbose_name = "Team"
-        verbose_name_plural = "Teams"
+        verbose_name = 'Task'
+        verbose_name_plural = 'Tasks'
         ordering = ["-id"]
         
     def __str__(self) -> str:
-        return self.name
+        return self.title
+
+
+class UserProjectTask(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True
+    )
+    project = models.ForeignKey(
+        Project,
+        on_delete=models.CASCADE
+    )
+    task = models.ForeignKey(
+        Task,
+        on_delete=models.SET_NULL, 
+        null=True
+    )
+    
+    class Meta:
+        verbose_name = 'UserProjectTask'
+        verbose_name_plural = 'UserProjectTasks'
+        ordering = ["-id"]
+        
+        unique_together = ('user', 'project', 'task')
+        
+    def __str__(self) -> str:
+        return f'{self.id}'
