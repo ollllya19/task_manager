@@ -1,3 +1,7 @@
 from django.test import TestCase
+from .services import ProjectService
 
-# Create your tests here.
+class TestWeatherRepositoryService(TestCase):
+
+    def setUp(self):
+        

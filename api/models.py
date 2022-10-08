@@ -8,11 +8,14 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 class UserProfile(models.Model):
+    """ Table containing information about User
+    """
     user = models.OneToOneField(
         User, 
         on_delete=models.CASCADE
     )
-    name = models.CharField(max_length=255, blank=True)
+    first_name = models.CharField(max_length=255, blank=True)
+    second_name = models.CharField(max_length=255, blank=True)
     image = models.ImageField(
         upload_to='uploads/', 
         blank=True, 
@@ -29,7 +32,7 @@ class UserProfile(models.Model):
         ordering = ["-id"]
         
     def __str__(self) -> str:
-        return self.name
+        return self.first_name
     
     def get_image(self) -> str:
         if self.image:
@@ -60,8 +63,10 @@ class UserProfile(models.Model):
         
         return thumbnail
     
-    
+
 class Project(models.Model):
+    """ Table containing information about a project
+    """
     title = models.CharField(max_length=255)
     creator = models.ForeignKey(
         User,
@@ -80,8 +85,16 @@ class Project(models.Model):
     def __str__(self) -> str:
         return self.title
     
-    
+
 class Task(models.Model):
+    """ Table containing information about a task
+    """    
+    # status types of task
+    TODO = 1
+    DOING = 2
+    DONE = 3
+    STATUSES = [(TODO, 1), (DOING, 2), (DONE, 3)]
+    
     title = models.CharField(max_length=255)
     creator = models.ForeignKey(
         User,
@@ -90,7 +103,12 @@ class Task(models.Model):
     )
     description = models.CharField(max_length=255)
     is_done = models.BooleanField(default=False)
-    created_date = models.DateField(auto_now_add=True)
+    status = models.IntegerField(
+        choices=STATUSES,
+        default=TODO
+    )
+    deadline = models.DateTimeField(null=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
     
     class Meta:
         verbose_name = 'Task'
@@ -101,7 +119,9 @@ class Task(models.Model):
         return self.title
 
 
-class UserProjectTask(models.Model):
+class User_Project_Task(models.Model):
+    """ Table contaiting connections between user, his tasks and projects 
+    """
     user = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
@@ -118,8 +138,8 @@ class UserProjectTask(models.Model):
     )
     
     class Meta:
-        verbose_name = 'UserProjectTask'
-        verbose_name_plural = 'UserProjectTasks'
+        verbose_name = 'User_Project_Task'
+        verbose_name_plural = 'User_Project_Tasks'
         ordering = ["-id"]
         
         unique_together = ('user', 'project', 'task')
