@@ -1,3 +1,4 @@
+from email.policy import default
 from PIL import Image
 from io import BytesIO
 
@@ -74,7 +75,7 @@ class Project(models.Model):
         null=True
     )
     # to make automatically 
-    member_count = models.IntegerField()
+    member_count = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     
     class Meta:

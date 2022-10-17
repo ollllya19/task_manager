@@ -7,11 +7,10 @@ class ProjectService:
     """
     
     @staticmethod
-    def create_project(_title, _creator, _member_count) -> None:
+    def create_project(_title, _creator) -> None:
         project = Project.objects.create(
             title=_title,
-            creator=_creator,
-            member_count=_member_count
+            creator=_creator
         )
         project.save()
         print(f'Project {id} was saved')
