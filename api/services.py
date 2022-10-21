@@ -1,5 +1,5 @@
-
 from api.models import UserProfile, Project, Task, User_Project_Task
+from .serializers import TaskSerializer, ProjectSerializer
 
 
 class ProjectService:
@@ -13,12 +13,19 @@ class ProjectService:
             creator=_creator
         )
         project.save()
-        print(f'Project {id} was saved')
+        print(f'Project {id} was created')
 
     @staticmethod
-    def get_project_by_id(id) -> None:
+    def get_project_by_id(id) -> ProjectSerializer:
         project = Project.objects.filter(id=id).first()
-        return project
+        response = ProjectSerializer(project, many=True)   
+        return response
+    
+    @staticmethod
+    def get_all_projects() -> ProjectSerializer:
+        projects = Project.objects.filter(id=id).first()
+        response = ProjectSerializer(projects, many=True)   
+        return response
     
     @staticmethod
     def update_project_by_id(id) -> None:
@@ -27,7 +34,8 @@ class ProjectService:
 
     @staticmethod
     def delete_project_by_id(id) -> None:
-        Project.objects.filter(id=id).first().delete()
+        project = Project.objects.filter(id=id).first()
+        project.delete()
         print(f'Project {id} was deleted')
 
 
@@ -46,11 +54,19 @@ class TaskService:
             deadline=_deadline
         )
         task.save()
+        print(f'Task {id} was created')
     
     @staticmethod
-    def get_task_by_id(id) -> None:
+    def get_all_tasks() -> TaskSerializer:
+        tasks = Task.objects.all()
+        response = TaskSerializer(tasks, many=True)   
+        return response
+    
+    @staticmethod
+    def get_task_by_id(id) -> TaskSerializer:
         task = Task.objects.filter(id=id).first()
-        return task
+        response = TaskSerializer(task, many=True)   
+        return response
 
     @staticmethod
     def delete_task_by_id(id) -> None:
@@ -73,7 +89,7 @@ class ProjectTaskService:
         print(f'Record {id} was saved')
 
     @staticmethod
-    def get_record_by_id(id) -> None:
+    def get_record_by_id(id) -> User_Project_Task:
         record = User_Project_Task.objects.filter(id=id).first()
         return record
 
