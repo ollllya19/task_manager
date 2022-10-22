@@ -20,6 +20,7 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
+    path('task', TaskAPIView.as_view()),
     path('task/<int:pk>', TaskAPIView.as_view()),
     path('project', ProjectAPIView.as_view()),
     path('project/<int:pk>', ProjectAPIView.as_view()),

@@ -1,3 +1,5 @@
+from pydoc import describe
+from turtle import title
 from api.models import UserProfile, Project, Task, User_Project_Task
 from .serializers import TaskSerializer, ProjectSerializer
 
@@ -7,7 +9,7 @@ class ProjectService:
     """
     
     @staticmethod
-    def create_project(_title, _creator) -> None:
+    def create_project(_title: str, _creator: str) -> None:
         project = Project.objects.create(
             title=_title,
             creator=_creator
@@ -16,24 +18,24 @@ class ProjectService:
         print(f'Project {id} was created')
 
     @staticmethod
-    def get_project_by_id(id) -> ProjectSerializer:
+    def get_project_by_id(id: int) -> ProjectSerializer:
         project = Project.objects.filter(id=id).first()
-        response = ProjectSerializer(project, many=True)   
+        response = ProjectSerializer(project)   
         return response
     
     @staticmethod
     def get_all_projects() -> ProjectSerializer:
-        projects = Project.objects.filter(id=id).first()
+        projects = Project.objects.all()
         response = ProjectSerializer(projects, many=True)   
         return response
     
     @staticmethod
-    def update_project_by_id(id) -> None:
+    def update_project_by_id(id: int) -> None:
         Project.objects.filter(id=id).first()
         print(f'Project {id} was updated')
 
     @staticmethod
-    def delete_project_by_id(id) -> None:
+    def delete_project_by_id(id: int) -> None:
         project = Project.objects.filter(id=id).first()
         project.delete()
         print(f'Project {id} was deleted')
@@ -44,17 +46,15 @@ class TaskService:
     """
     
     @staticmethod
-    def create_task(_title, _creator, _description, _is_done, _status, _deadline) -> None:
+    def create_task(_title: str, _description: str, _is_done, _status) -> None:
         task = Task.objects.create(
             title=_title,
-            creator=_creator,
             description=_description,
             is_done=_is_done,
             status=_status,
-            deadline=_deadline
         )
         task.save()
-        print(f'Task {id} was created')
+        print(f'Task {task.id} was created\n')  # type: ignore
     
     @staticmethod
     def get_all_tasks() -> TaskSerializer:
@@ -63,37 +63,17 @@ class TaskService:
         return response
     
     @staticmethod
-    def get_task_by_id(id) -> TaskSerializer:
+    def get_task_by_id(id: int) -> Task:
         task = Task.objects.filter(id=id).first()
-        response = TaskSerializer(task, many=True)   
-        return response
-
-    @staticmethod
-    def delete_task_by_id(id) -> None:
-        Task.objects.filter(id=id).first().delete()
-        print(f'Task {id} was deleted')
-
-
-class ProjectTaskService:
-    """ Class containing CRUD operations with ProjectTask model
-    """
+        # response = TaskSerializer(task)   
+        return task  # type: ignore
     
     @staticmethod
-    def create_record(_user, _project, _task) -> None:
-        record= User_Project_Task.objects.create(
-            user=_user,
-            project=_project,
-            task=_task
-        )
-        record.save()
-        print(f'Record {id} was saved')
+    def update_task_by_id(id: int, _title: str, _description: str) -> None:
+        Task.objects.filter(id=id).update(title=_title, description=_description)
+        print(f'Task {id} was updated\n')
 
     @staticmethod
-    def get_record_by_id(id) -> User_Project_Task:
-        record = User_Project_Task.objects.filter(id=id).first()
-        return record
-
-    @staticmethod
-    def delete_record_by_id(id) -> None:
-        User_Project_Task.objects.filter(id=id).first().delete()
-        print(f'Record {id} was deleted')
+    def delete_task_by_id(id: int) -> None:
+        Task.objects.filter(id=id).delete()
+        print(f'Task {id} was deleted\n')

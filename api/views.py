@@ -4,18 +4,17 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from .serializers import TaskSerializer, ProjectSerializer, UserProjectTaskSerializer
-from .services import TaskService, ProjectService, ProjectTaskService
+from .services import TaskService, ProjectService
 
 
 class TaskAPIView(GenericAPIView):
     serializer_class = TaskSerializer       
     
-    def get(self, request: Request) -> Response:
+    def get(self, request: Request) -> Response:  # type: ignore
         """ Getting all tasks """
         response = TaskService.get_all_tasks()
         return Response(data=response.data)
     
-
     def get(self, request: Request, pk: int) -> Response:
         """ Getting task by id  """
         response = TaskService.get_task_by_id(pk)
@@ -23,7 +22,7 @@ class TaskAPIView(GenericAPIView):
     
     def post(self, request: Request, *args, **kwargs) -> Response:
         """ Adding new task """
-        serializer = TaskSerializer(data=request.data)
+        serializer = TaskSerializer(data=request.data)  # type: ignore
         if serializer.is_valid():
             serializer.save()
             return Response(status=status.HTTP_201_CREATED)
@@ -32,25 +31,25 @@ class TaskAPIView(GenericAPIView):
     def delete(self, request: Request, pk: int) -> Response:
         """ Deleting task by id  """
         TaskService.delete_task_by_id(pk)
-        return Response(status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_200_OK)
 
 
 class ProjectAPIView(GenericAPIView):
     serializer_class = ProjectSerializer
-    
-    def get(self, request: Request) -> Response:
-        """ Getting all projects """
-        response = ProjectService.get_all_tasks()
-        return Response(data=response.data)
 
+    def get(self, request: Request) -> Response:  # type: ignore
+        """ Getting project by id  """
+        response = ProjectService.get_all_projects()
+        return Response(data=response.data)
+    
     def get(self, request: Request, pk: int) -> Response:
         """ Getting project by id  """
-        response = TaskService.get_task_by_id(pk)
+        response = ProjectService.get_project_by_id(pk)
         return Response(data=response.data)
     
     def post(self, request: Request, *args, **kwargs) -> Response:
         """ Adding new project """
-        serializer = ProjectSerializer(data=request.data)
+        serializer = ProjectSerializer(data=request.data)  # type: ignore
         if serializer.is_valid():
             serializer.save()
             return Response(status=status.HTTP_201_CREATED)
