@@ -51,7 +51,7 @@ class UserProfile(models.Model):
                 return 'http://127.0.0.1:8000' + self.thumbnail.url
             else:
                 return ''
-            
+    
     def make_thumnail(self, image, size=(300, 200)) -> File:
         img = Image.open(image)
         img.convert('RGB')
@@ -63,7 +63,7 @@ class UserProfile(models.Model):
         thumbnail = File(thumb_io, name=image.name) 
         
         return thumbnail
-    
+
 
 class Project(models.Model):
     """ Table containing information about a project
@@ -74,8 +74,6 @@ class Project(models.Model):
         on_delete=models.SET_NULL, 
         null=True
     )
-    # to make automatically 
-    member_count = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     
     class Meta:
@@ -85,7 +83,7 @@ class Project(models.Model):
         
     def __str__(self) -> str:
         return self.title
-    
+
 
 class Task(models.Model):
     """ Table containing information about a task
@@ -103,7 +101,6 @@ class Task(models.Model):
         null=True
     )
     description = models.CharField(max_length=255)
-    is_done = models.BooleanField(default=False)
     status = models.IntegerField(
         choices=STATUSES,
         default=TODO
@@ -146,4 +143,4 @@ class User_Project_Task(models.Model):
         unique_together = ('user', 'project', 'task')
         
     def __str__(self) -> str:
-        return f'{self.id}'
+        return f'{self.id}'  # type: ignore

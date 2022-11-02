@@ -9,14 +9,14 @@ class UserProfileAdmin(admin.ModelAdmin):
     search_fields = ('user', 'first_name')
     
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'creator', 'member_count', 'created_at')
+    list_display = ('id', 'title', 'creator', 'created_at')
     list_display_links = ('id',)
     search_fields = ('title',)
     list_filter = ('title', 'created_at')
     
 class TaskAdmin(admin.ModelAdmin):
     list_display = (
-        'id', 'title', 'creator', 'description', 'is_done', 'status', 'deadline', 'created_at')
+        'id', 'title', 'creator', 'description', 'status', 'deadline', 'created_at')
     list_display_links = ('id',)
     search_fields = ('title',)
     list_filter = ('title', 'creator', 'created_at')
