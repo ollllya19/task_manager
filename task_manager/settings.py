@@ -4,9 +4,6 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-d+-&&bh0va&wdk5xe53o+ev0n6i!py!55xb*e8y&shbl80xi_k'
 
@@ -72,8 +69,12 @@ WSGI_APPLICATION = 'task_manager.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'task-manager', 
+        'USER': 'postgres',
+        'PASSWORD': '12345',
+        'HOST': 'localhost', 
+        'PORT': '5432',
     }
 }
 
