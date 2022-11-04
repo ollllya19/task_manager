@@ -3,23 +3,23 @@ from turtle import title
 from django.test import TestCase
 
 from .models import Task
-from .services import ProjectService
-from .services import TaskService
+from .services.project_services import ProjectService
+from .services.task_services import TaskService
 
 
 class TestTaskService(TestCase):
     
-    def setUp(self):
-        TaskService().create_task(
-            _title='Заголовок',
-            _description='Описание',
-            _is_done=True,
-            _status=1)
-        TaskService().create_task(
-            _title='Заголовок2',
-            _description='Описание2',
-            _is_done=True,
-            _status=1)
+    # def setUp(self):
+    #     TaskService().create_task(
+    #         _title='Заголовок',
+    #         _description='Описание',
+    #         _is_done=True,
+    #         _status=1)
+    #     TaskService().create_task(
+    #         _title='Заголовок2',
+    #         _description='Описание2',
+    #         _is_done=True,
+    #         _status=1)
         
     def test_get_task(self):
         """ Testing of getting task by id """
