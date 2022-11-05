@@ -32,3 +32,13 @@ class ProjectService:
     def delete_project_by_id(id: int) -> None:
         Project.objects.filter(id=id).delete()
         print(f'Project {id} was deleted')
+
+
+class ProejctTasksService:
+    
+    @staticmethod
+    def get_tasks() -> TaskSerializer:
+        tasks = TaskRepository.get_incoming_tasks()
+        response = TaskSerializer(tasks, many=True)   
+        print(f'Getting incoming tasks') 
+        return response

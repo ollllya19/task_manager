@@ -24,7 +24,7 @@ class TaskService:
         print(f'Error in creating')
         return False
     
-    # fix me
+    # fix me (make with the help of serializator)
     @staticmethod
     def update_task_by_id(id: int, _title: str, _description: str) -> None:
         Task.objects.filter(id=id).update(title=_title, description=_description)
@@ -58,6 +58,3 @@ class FilterdTasksService:
         response = TaskSerializer(tasks, many=True)   
         print(f'Getting upcoming tasks') 
         return response
-    
-    
-
