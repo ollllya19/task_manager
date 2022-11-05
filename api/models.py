@@ -105,7 +105,7 @@ class Task(models.Model):
         choices=STATUSES,
         default=TODO
     )
-    deadline = models.DateTimeField(null=True)
+    deadline = models.DateField(null=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     
     class Meta:

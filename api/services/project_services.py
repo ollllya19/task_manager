@@ -6,7 +6,6 @@ from ..serializers import ProjectSerializer
 class ProjectService:
     """ Class containing CRUD operations with Project model
     """
-
     @staticmethod
     def get_project_by_id(id: int) -> ProjectSerializer:
         project = Project.objects.filter(id=id).first()
