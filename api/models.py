@@ -69,7 +69,7 @@ class Project(models.Model):
     """ Table containing information about a project
     """
     title = models.CharField(max_length=255)
-    creator = models.ForeignKey(
+    user = models.ForeignKey(
         User,
         on_delete=models.SET_NULL, 
         null=True
@@ -95,7 +95,7 @@ class Task(models.Model):
     STATUSES = [(TODO, 1), (DOING, 2), (DONE, 3)]
     
     title = models.CharField(max_length=255)
-    creator = models.ForeignKey(
+    user = models.ForeignKey(
         User,
         on_delete=models.SET_NULL, 
         null=True
@@ -105,7 +105,12 @@ class Task(models.Model):
         choices=STATUSES,
         default=TODO
     )
-    deadline = models.DateField(null=True)
+    todo_date = models.DateField(null=True)
+    project = models.ForeignKey(
+        Project,
+        on_delete=models.SET_NULL, 
+        null=True
+    )
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     
     class Meta:
@@ -115,32 +120,3 @@ class Task(models.Model):
         
     def __str__(self) -> str:
         return self.title
-
-
-class User_Project_Task(models.Model):
-    """ Table contaiting connections between user, his tasks and projects 
-    """
-    user = models.ForeignKey(
-        User,
-        on_delete=models.SET_NULL,
-        null=True
-    )
-    project = models.ForeignKey(
-        Project,
-        on_delete=models.CASCADE
-    )
-    task = models.ForeignKey(
-        Task,
-        on_delete=models.SET_NULL, 
-        null=True
-    )
-    
-    class Meta:
-        verbose_name = 'User_Project_Task'
-        verbose_name_plural = 'User_Project_Tasks'
-        ordering = ["-id"]
-        
-        unique_together = ('user', 'project', 'task')
-        
-    def __str__(self) -> str:
-        return f'{self.id}'  # type: ignore
