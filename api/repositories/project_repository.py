@@ -1,5 +1,4 @@
 from api.models import Task, Project
-import datetime
 
 class ProjectRepository:
     """ Class containing CRUD operations with Task model
@@ -9,7 +8,8 @@ class ProjectRepository:
         project = Project.objects.filter(title=project).first()  # type: ignore
         return project
 
+    # to fix
     @staticmethod
     def get_project_tasks(project: str) :
-        task = Task.objects.filter(deadline=datetime.date.today())
+        task = Task.objects.filter()
         return task

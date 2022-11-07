@@ -1,14 +1,16 @@
-from rest_framework.generics import GenericAPIView, RetrieveAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.generics import GenericAPIView, RetrieveAPIView
+from rest_framework .permissions import IsAuthenticated
 
-from ..serializers import TaskSerializer, ProjectSerializer
+from ..serializers import TaskSerializer
 from ..services.task_services import TaskService, FilterdTasksService
 from ..services.project_services import ProjectService
 
 
 class TaskAPIView(GenericAPIView):
+    permission_classes = [IsAuthenticated]
     serializer_class = TaskSerializer       
     
     def get(self, request: Request, pk: int) -> Response:
@@ -26,21 +28,27 @@ class TaskAPIView(GenericAPIView):
         """ Deleting task by id """
         TaskService.delete_task_by_id(pk)
         return Response(status=status.HTTP_200_OK)
-
+        
 
 class IncomingTasksAPIView(RetrieveAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = TaskSerializer  
 
     def get(self, request: Request):
         response = FilterdTasksService.get_incoming_tasks()
         return Response(data=response.data, status=status.HTTP_200_OK)
 
 class TodayTasksAPIView(RetrieveAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = TaskSerializer  
     
     def get(self, request: Request):
         response = FilterdTasksService.get_today_tasks()
         return Response(data=response.data, status=status.HTTP_200_OK)
 
 class UpcomingTasksAPIView(RetrieveAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = TaskSerializer  
     
     def get(self, request: Request):
         response = FilterdTasksService.get_upcoming_tasks()

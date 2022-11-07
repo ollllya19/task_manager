@@ -1,14 +1,15 @@
-from rest_framework.generics import GenericAPIView, RetrieveAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.generics import GenericAPIView, RetrieveAPIView
+from rest_framework .permissions import IsAuthenticated
 
 from ..serializers import ProjectSerializer
-from ..services.task_services import FilterdTasksService
 from ..services.project_services import ProjectService, ProejctTasksService
 
 
 class ProjectAPIView(GenericAPIView):
+    permission_classes = [IsAuthenticated]
     serializer_class = ProjectSerializer
 
     def get(self, request: Request, pk: int) -> Response:
@@ -29,7 +30,10 @@ class ProjectAPIView(GenericAPIView):
 
 
 class ProejctTasksAPIView(RetrieveAPIView):
-    
+    permission_classes = [IsAuthenticated]
+    # to add serializer here
+
     def get(self, request: Request, project_name: str) :
+        """ Getting all tasks of the project """
         response = ProejctTasksService.get_project_tasks(project_name)
         return Response(data=response.data, status=status.HTTP_200_OK)

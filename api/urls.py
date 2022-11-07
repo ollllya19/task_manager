@@ -3,7 +3,8 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework import permissions
 
-from .views import TaskAPIView, ProjectAPIView, IncomingTasksAPIView, TodayTasksAPIView, UpcomingTasksAPIView
+from .views.views import TaskAPIView, IncomingTasksAPIView, TodayTasksAPIView, UpcomingTasksAPIView
+from .views.project_view import ProjectAPIView
 
 # Swagger
 schema_view = get_schema_view(
