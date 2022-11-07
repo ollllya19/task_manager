@@ -1,6 +1,6 @@
 from rest_framework.request import Request
 from api.models import Task
-from ..serializers import TaskSerializer
+from ..serializers.task_serializers import TaskSerializer
 from ..repositories.task_repository import TaskRepository
 
 

@@ -4,7 +4,7 @@ from rest_framework import status
 from rest_framework.generics import GenericAPIView, RetrieveAPIView
 from rest_framework .permissions import IsAuthenticated
 
-from ..serializers import TaskSerializer
+from ..serializers.task_serializers import TaskSerializer
 from ..services.task_services import TaskService, FilterdTasksService
 from ..services.project_services import ProjectService
 
