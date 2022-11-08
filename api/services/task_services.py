@@ -53,8 +53,8 @@ class FilterdTasksService:
         return response
     
     @staticmethod
-    def get_upcoming_tasks(user) -> TaskSerializer:
+    def get_upcoming_tasks(user) -> GetTasksSerializer:
         tasks = TaskRepository.get_upcoming_tasks(user)
-        response = TaskSerializer(tasks, many=True)   
+        response = GetTasksSerializer(tasks, many=True)   
         print(f'Getting upcoming tasks') 
         return response
