@@ -109,7 +109,8 @@ class Task(models.Model):
     project = models.ForeignKey(
         Project,
         on_delete=models.SET_NULL, 
-        null=True
+        null=True,
+        blank=True
     )
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     

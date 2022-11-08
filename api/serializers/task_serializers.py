@@ -8,3 +8,10 @@ class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         fields = '__all__'
+
+
+class GetTasksSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Task
+        exclude = ['user', 'created_at']

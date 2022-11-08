@@ -1,6 +1,6 @@
 from rest_framework.request import Request
 from api.models import Task
-from ..serializers.task_serializers import TaskSerializer
+from ..serializers.task_serializers import TaskSerializer, GetTasksSerializer
 from ..repositories.task_repository import TaskRepository
 
 
@@ -39,22 +39,22 @@ class TaskService:
 class FilterdTasksService:
     
     @staticmethod
-    def get_incoming_tasks() -> TaskSerializer:
-        tasks = TaskRepository.get_incoming_tasks()
-        response = TaskSerializer(tasks, many=True)   
+    def get_incoming_tasks(user) -> GetTasksSerializer:
+        tasks = TaskRepository.get_incoming_tasks(user)
+        response = GetTasksSerializer(tasks, many=True)   
         print(f'Getting incoming tasks') 
         return response
     
     @staticmethod
-    def get_today_tasks() -> TaskSerializer:
-        tasks = TaskRepository.get_today_tasks()
-        response = TaskSerializer(tasks, many=True)   
+    def get_today_tasks(user) -> GetTasksSerializer:
+        tasks = TaskRepository.get_today_tasks(user)
+        response = GetTasksSerializer(tasks, many=True)   
         print(f'Getting today tasks') 
         return response
     
     @staticmethod
-    def get_upcoming_tasks() -> TaskSerializer:
-        tasks = TaskRepository.get_upcoming_tasks()
+    def get_upcoming_tasks(user) -> TaskSerializer:
+        tasks = TaskRepository.get_upcoming_tasks(user)
         response = TaskSerializer(tasks, many=True)   
         print(f'Getting upcoming tasks') 
         return response

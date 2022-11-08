@@ -4,9 +4,8 @@ from rest_framework import status
 from rest_framework.generics import GenericAPIView, RetrieveAPIView
 from rest_framework .permissions import IsAuthenticated
 
-from ..serializers.task_serializers import TaskSerializer
+from ..serializers.task_serializers import TaskSerializer, GetTasksSerializer
 from ..services.task_services import TaskService, FilterdTasksService
-from ..services.project_services import ProjectService
 
 
 class TaskAPIView(GenericAPIView):
@@ -30,26 +29,30 @@ class TaskAPIView(GenericAPIView):
         return Response(status=status.HTTP_200_OK)
         
 
+# Tasks retrieving classes for sidebar 
 class IncomingTasksAPIView(RetrieveAPIView):
     permission_classes = [IsAuthenticated]
-    serializer_class = TaskSerializer  
+    serializer_class = GetTasksSerializer  
 
     def get(self, request: Request):
-        response = FilterdTasksService.get_incoming_tasks()
+        """ Getting incoming tasks of user """
+        response = FilterdTasksService.get_incoming_tasks(request.user)
         return Response(data=response.data, status=status.HTTP_200_OK)
 
 class TodayTasksAPIView(RetrieveAPIView):
     permission_classes = [IsAuthenticated]
-    serializer_class = TaskSerializer  
+    serializer_class = GetTasksSerializer  
     
     def get(self, request: Request):
-        response = FilterdTasksService.get_today_tasks()
+        """ Getting today tasks of user """
+        response = FilterdTasksService.get_today_tasks(request.user)
         return Response(data=response.data, status=status.HTTP_200_OK)
 
 class UpcomingTasksAPIView(RetrieveAPIView):
     permission_classes = [IsAuthenticated]
-    serializer_class = TaskSerializer  
+    serializer_class = GetTasksSerializer  
     
     def get(self, request: Request):
-        response = FilterdTasksService.get_upcoming_tasks()
+        """ Getting up+coming tasks of user """
+        response = FilterdTasksService.get_upcoming_tasks(request.user)
         return Response(data=response.data, status=status.HTTP_200_OK)

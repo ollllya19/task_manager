@@ -5,16 +5,16 @@ class TaskRepository:
     """ Class containing CRUD operations with Task model
     """
     @staticmethod
-    def get_today_tasks() :
-        task = Task.objects.filter(deadline=datetime.date.today())
+    def get_today_tasks(user) :
+        task = Task.objects.filter(todo_date=datetime.date.today(), user=user)
         return task
 
     @staticmethod
-    def get_incoming_tasks() :
-        task = Task.objects.filter(deadline=None)
+    def get_incoming_tasks(user) :
+        task = Task.objects.filter(todo_date=None, user=user)
         return task
     
     @staticmethod
-    def get_upcoming_tasks() :
-        task = Task.objects.filter(deadline__gt=datetime.date.today())
+    def get_upcoming_tasks(user) :
+        task = Task.objects.filter(todo_date__gt=datetime.date.today(), user=user)
         return task
