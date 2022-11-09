@@ -24,7 +24,7 @@ class ProjectService:
         print(f'Error in creating')
         return False
     
-    # to fix
+    # to fixoijm
     @staticmethod
     def update_project_by_id(id: int) -> None:
         Project.objects.filter(id=id).first()
@@ -39,8 +39,8 @@ class ProjectService:
 class ProejctTasksService:
     
     @staticmethod
-    def get_project_tasks(project: str) -> TaskSerializer:
-        tasks = ProjectRepository.get_project_tasks(project)
+    def get_project_tasks(project: str, user) -> TaskSerializer:
+        tasks = ProjectRepository.get_project_tasks(project, user)
         response = TaskSerializer(tasks, many=True)   
         print(f'Getting {project} project tasks') 
         return response

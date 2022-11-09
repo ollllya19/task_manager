@@ -4,12 +4,12 @@ class ProjectRepository:
     """ Class containing CRUD operations with Task model
     """
     @staticmethod
-    def get_project_by_name(project: str) :
-        project = Project.objects.filter(title=project).first()  # type: ignore
+    def get_project_by_name(project_name: str, user) :
+        project = Project.objects.filter(title=project_name, user=user).first()  # type: ignore
         return project
 
-    # to fix
     @staticmethod
-    def get_project_tasks(project: str) :
-        task = Task.objects.filter()
+    def get_project_tasks(project_name: str, user) :
+        project = ProjectRepository.get_project_by_name(project_name, user)
+        task = Task.objects.filter(project=project)
         return task

@@ -8,7 +8,7 @@ router = DefaultRouter()
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('task-manager/', include('api.urls')),
-    # jws-token authorization
+    # jwt authorization
     path('task-manager/auth/', include('djoser.urls')),
     re_path(r'^task-manager/', include('djoser.urls.authtoken')),
 ]
