@@ -44,3 +44,11 @@ class ProejctTasksService:
         response = TaskSerializer(tasks, many=True)   
         print(f'Getting {project} project tasks') 
         return response
+
+    @staticmethod
+    def get_all_projects(user) -> ProjectSerializer:
+        projects = ProjectRepository.get_all_project(user)
+        response = ProjectSerializer(projects, many=True)   
+        print(f'Getting all projects') 
+        return response
+

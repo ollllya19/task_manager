@@ -4,7 +4,7 @@ from drf_yasg import openapi
 from rest_framework import permissions
 
 from .views.views import TaskAPIView, IncomingTasksAPIView, TodayTasksAPIView, UpcomingTasksAPIView
-from .views.project_view import ProjectAPIView, ProejctTasksAPIView
+from .views.project_view import ProjectAPIView, ProejctTasksAPIView, AllProejctsAPIView
 
 # Swagger
 schema_view = get_schema_view(
@@ -27,6 +27,7 @@ urlpatterns = [
     path('tasks/today', TodayTasksAPIView.as_view()),
     path('tasks/upcoming', UpcomingTasksAPIView.as_view()),
     # projects api
+    path('projects', AllProejctsAPIView.as_view()),
     path('project/<str:project_name>', ProejctTasksAPIView.as_view()),
     # swagger api
     re_path(r'^swagger(?P<format>\.json|\.yaml)$',schema_view.without_ui(cache_timeout=0), name='schema-json'),

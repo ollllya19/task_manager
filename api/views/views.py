@@ -38,6 +38,7 @@ class IncomingTasksAPIView(RetrieveAPIView):
     def get(self, request: Request) -> Response:
         """ Getting incoming tasks of user """
         response = FilterdTasksService.get_incoming_tasks(request.user)
+        print(response.data)
         return Response(data=response.data, status=status.HTTP_200_OK)
 
 
@@ -48,6 +49,7 @@ class TodayTasksAPIView(RetrieveAPIView):
     def get(self, request: Request) -> Response:
         """ Getting today tasks of user """
         response = FilterdTasksService.get_today_tasks(request.user)
+        print(response.data)
         return Response(data=response.data)
 
 
@@ -58,4 +60,5 @@ class UpcomingTasksAPIView(RetrieveAPIView):
     def get(self, request: Request) -> Response:
         """ Getting upcoming tasks of user """
         response = FilterdTasksService.get_upcoming_tasks(request.user)
+        print(response.data)
         return Response(data=response.data, status=status.HTTP_200_OK)

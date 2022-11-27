@@ -34,7 +34,19 @@ class ProejctTasksAPIView(RetrieveAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = TaskSerializer
 
-    def get(self, request: Request, project_name: str) :
+    def get(self, request: Request, project_name: str) -> Response:
         """ Getting all tasks of the project """
         response = ProejctTasksService.get_project_tasks(project_name, request.user)
+        print(response.data)
+        return Response(data=response.data, status=status.HTTP_200_OK)
+
+
+class AllProejctsAPIView(RetrieveAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = ProjectSerializer
+
+    def get(self, request: Request) -> Response:
+        """ Getting all tasks of the project """
+        response = ProejctTasksService.get_all_projects(request.user)
+        print(response.data)
         return Response(data=response.data, status=status.HTTP_200_OK)

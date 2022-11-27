@@ -11,5 +11,10 @@ class ProjectRepository:
     @staticmethod
     def get_project_tasks(project_name: str, user) :
         project = ProjectRepository.get_project_by_name(project_name, user)
-        task = Task.objects.filter(project=project)
-        return task
+        tasks = Task.objects.filter(project=project)
+        return tasks
+
+    @staticmethod
+    def get_all_project(user) :
+        projects = Project.objects.filter(user=user)
+        return projects
