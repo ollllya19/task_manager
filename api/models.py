@@ -105,7 +105,7 @@ class Task(models.Model):
         choices=STATUSES,
         default=TODO
     )
-    todo_date = models.DateField(null=True)
+    todo_date = models.DateField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     
     class Meta:
@@ -127,7 +127,9 @@ class User_Project_Task(models.Model):
     )
     project = models.ForeignKey(
         Project,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        null=True, 
+        blank=True
     )
     task = models.ForeignKey(
         Task,

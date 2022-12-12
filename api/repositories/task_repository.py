@@ -1,4 +1,4 @@
-from api.models import Task
+from api.models import Task, User_Project_Task
 import datetime
 
 class TaskRepository:
@@ -6,15 +6,17 @@ class TaskRepository:
     """
     @staticmethod
     def get_today_tasks(user) :
-        task = Task.objects.filter(todo_date=datetime.date.today(), user=user)
-        return task
+        tasks = User_Project_Task.objects.filter(user=user, task__todo_date=datetime.date.today())
+        # print(tasks)
+        return tasks
 
     @staticmethod
     def get_incoming_tasks(user) :
-        task = Task.objects.filter(todo_date=None, user=user)
-        return task
+        tasks = User_Project_Task.objects.filter(user=user, task__todo_date=None)
+        return tasks
     
     @staticmethod
     def get_upcoming_tasks(user) :
-        task = Task.objects.filter(todo_date__gt=datetime.date.today(), user=user)
-        return task
+        tasks = User_Project_Task.objects.filter(user=user, task__todo_date__gt=datetime.date.today())
+        # task = Task.objects.filter(todo_date__gt=datetime.date.today(), user=user)
+        return tasks

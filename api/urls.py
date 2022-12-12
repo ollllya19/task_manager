@@ -3,7 +3,7 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework import permissions
 
-from .views.views import TaskAPIView, IncomingTasksAPIView, TodayTasksAPIView, UpcomingTasksAPIView
+from .views.views import TaskAPIView, IncomingTasksAPIView, TodayTasksAPIView, UpcomingTasksAPIView, CreateTaskAPIView
 from .views.project_view import ProjectAPIView, ProejctTasksAPIView, AllProejctsAPIView
 
 # Swagger
@@ -21,6 +21,7 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
+    path('task', CreateTaskAPIView.as_view()),
     path('task/<int:pk>', TaskAPIView.as_view()),
     # date filtered tasks
     path('tasks/incoming', IncomingTasksAPIView.as_view()),

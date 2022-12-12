@@ -1,7 +1,7 @@
 from rest_framework.request import Request
 from api.models import Project
 from ..serializers.task_serializers import TaskSerializer
-from ..serializers.project_serializers import ProjectSerializer
+from ..serializers.project_serializers import ProjectSerializer, ProjectTasksSerializer
 from ..repositories.project_repository import ProjectRepository
 
 
@@ -39,10 +39,10 @@ class ProjectService:
 class ProejctTasksService:
     
     @staticmethod
-    def get_project_tasks(project: str, user) -> TaskSerializer:
-        tasks = ProjectRepository.get_project_tasks(project, user)
-        response = TaskSerializer(tasks, many=True)   
-        print(f'Getting {project} project tasks') 
+    def get_project_tasks(project: str, user) -> ProjectTasksSerializer:
+        project_tasks = ProjectRepository.get_project_tasks(project, user)
+        response = ProjectTasksSerializer(project_tasks, many=True)   
+        print(f'Getting {project} project tasks and users') 
         return response
 
     @staticmethod

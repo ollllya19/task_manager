@@ -21,7 +21,13 @@ class TaskAdmin(admin.ModelAdmin):
     search_fields = ('title',)
     list_filter = ('title', 'user', 'created_at')
 
+class UserProjectTaskAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'project', 'task')
+    list_display_links = ('id',)
+    # search_fields = ('title',)
+    list_filter = ('project', 'user', 'task')
+
 admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(Task, TaskAdmin)
-admin.site.register(User_Project_Task)
+admin.site.register(User_Project_Task, UserProjectTaskAdmin)
