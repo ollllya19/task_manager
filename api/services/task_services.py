@@ -2,7 +2,7 @@ from rest_framework.request import Request
 from api.models import Task, User_Project_Task
 from ..serializers.task_serializers import TaskSerializer, GetTasksSerializer
 from ..repositories.task_repository import TaskRepository
-from ..repositories.project_repository import ProjectRepository
+from ..repositories.project_repository import ProjectRepository, UserRepository
 from ..serializers.project_serializers import ProjectTasksSerializer
 
 
@@ -67,23 +67,34 @@ class CreateTaskService:
     """
     @staticmethod
     def create_task(request: Request) -> bool:
+        print(request.data['todoDate'])# type: ignore      
 
         # tring to create task object
         task = ProjectRepository.create_task(
                 title=request.data['title'],           # type: ignore      
                 desc=request.data['desc'],     # type: ignore          
                 status=request.data['status'],          # type: ignore  
-                user=request.user)
+                user=request.user,
+                todo_date=request.data['todoDate'])  # type: ignore 
         if task is None:
             print('task error')
             print(f'Error in creating')
             return False
 
-        #  tring to create task-project connection
-        print(request.data)
-        print(request.data['project'])             # type: ignore  
+        #  trying to create task-project connection
+        user = None
+        user_name = request.data['userName']   # type: ignore 
+        if user_name != "":                 
+            user = UserRepository.get_user_by_name(user_name)    # type: ignore 
+            print('fount name')
+        if user is None:
+            user = request.user
+            print('no name')
+
+
         task_record = ProjectRepository.create_task_project_record(
-            user=request.user,
+            creator=request.user,
+            user=user,
             task=task,
             project_name=request.data['project']             # type: ignore  
         )

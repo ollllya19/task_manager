@@ -1,6 +1,9 @@
 import datetime
 from api.models import Task, Project, User_Project_Task
 
+from django.contrib.auth import get_user_model
+User = get_user_model()
+
 class ProjectRepository:
     """ Class containing CRUD operations with Task model
     """
@@ -21,29 +24,31 @@ class ProjectRepository:
         return projects
 
     @staticmethod
-    def create_task(title, desc, status, user):
+    def create_task(title, desc, status, user, todo_date):
+        date = None
+        if todo_date != "":
+            date = datetime.datetime.strptime(todo_date, "%d.%m.%Y").date() # type: ignore  
+        print(date)
         try:
             task = Task(
                 title=title,              
                 description=desc,              
                 status=status,        
                 user=user,
-                # todo_date=datetime.date()    # type: ignore    
+                todo_date=date   
             )
             task.save()
             return task
-        except:
+        except Exception as e:
+            print(e)
             return None
 
     @staticmethod
-    def create_task_project_record(user, task, project_name):
+    def create_task_project_record(creator, user, task, project_name):
         try:
-            print('-------------')
-            print(project_name)
             project = None
             if project_name != "":
-                print('ищем проект')
-                project = ProjectRepository.get_project_by_name(project_name, user)
+                project = ProjectRepository.get_project_by_name(project_name, creator)
             record = User_Project_Task(
                 user=user,              
                 task=task,                      
@@ -55,3 +60,10 @@ class ProjectRepository:
             return False
 
 
+class UserRepository:
+    """ Class containing CRUD operations with Task model
+    """
+    @staticmethod
+    def get_user_by_name(user_name: str) :
+        user = User.objects.filter(username=user_name).first()  # type: ignore
+        return user

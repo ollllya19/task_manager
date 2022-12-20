@@ -1,0 +1,34 @@
+#docker-compose.yml
+version: "3"
+services:
+  mariadb:
+    image: "mariadb:${MARIADB_VERSION}"
+    restart: 'always'
+    volumes: 
+      - "/var/lib/mysql/data:${MARIADB_DATA_DIR}"
+      - "/var/lib/mysql/logs:${MARIADB_LOG_DIR}"
+      - /var/docker/mariadb/conf:/etc/mysql
+    # берём настройки переменных окружения для MariaDB из .env файла
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+    ports:
+      - "3306:3306"
+  my_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - mariadb
+    # внутренний сетевой доступ к контейнеру mariadb
+    links:
+      - mariadb
+    # если нужно что-то передавать через переменные окружения, то необходимо создать блок "environment:", 
+    # а значения можно получить в приложении через os.environ (в Python)
+    # привязка порта приложения к порту докер хоста, если порт был открыт через EXPOSE в Dockerfile
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    command: bash -c "python manage.py migrate && gunicorn -b 0.0.0.0:${APP_PORT} application.wsgi"
+    restart: unless-stopped
