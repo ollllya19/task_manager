@@ -7,7 +7,6 @@ class TaskRepository:
     @staticmethod
     def get_today_tasks(user) :
         tasks = User_Project_Task.objects.filter(user=user, task__todo_date=datetime.date.today())
-        # print(tasks)
         return tasks
 
     @staticmethod
