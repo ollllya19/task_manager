@@ -8,9 +8,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-d+-&&bh0va&wdk5xe53o+ev0n6i!py!55xb*e8y&shbl80xi_k'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
+
+
+CORS_ORIGIN_ALLOW_ALL = True
+
+# CORS_ORIGIN_WHITELIST = [
+#     'http://front.app.local',
+# ]
 
 
 # Application definition
@@ -32,20 +39,16 @@ INSTALLED_APPS = [
     'api',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:8000',
-    'http://localhost:3000',
-]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware'
 ]
 
 ROOT_URLCONF = 'task_manager.urls'
@@ -77,7 +80,7 @@ DATABASES = {
         'NAME': 'task-manager', 
         'USER': 'postgres',
         'PASSWORD': '12345',
-        'HOST': 'localhost', 
+        'HOST': 'postgres', 
         'PORT': '5432',
     }
 }
@@ -129,11 +132,5 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ),
 }
-
-CORS_ORIGIN_ALLOW_ALL = False
-
-CORS_ORIGIN_WHITELIST = (
-    'localhost:3000',
-)
 
 DATE_INPUT_FORMATS = ['%d.%m.%Y']
